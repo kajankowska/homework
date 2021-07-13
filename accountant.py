@@ -1,94 +1,94 @@
-# Prosty system księgowy
-# Rejestrowanie zmian dla poszczególnych operacji
+# Simple accounting system
+# Recording changes for individual operations
 
 import sys
 
-operacje = (sys.argv[1:])
+operation = (sys.argv[1:])
 print(sys.argv)
 
 actions = ["saldo", "zakup", "sprzedaż", "stop"]
 
-# zmienne:
+# variables:
 
-kwota = 0
-ilosc = 0
-kom = 0
-saldo = 0
-cena = 0
-magazyn = {}
+amount = 0
+quantity = 0
+comment = 0
+balance = 0
+price = 0
+storage = {}
 
-operacje_saldo = []
-operacje_zakup = []
-operacje_sprzedaz = []
+sys_actions = []
 
 while True:
-    print("\nWprowadź operację, którą chcesz rozpocząć. \nDo wyboru: saldo, zakup, sprzedaż."
-          "\n* Jeśli chcesz zakończyć, wprowadź: stop *")
-    action = input()
+    action = input("\nWprowadź operację, którą chcesz rozpocząć. \nDo wyboru: saldo, zakup, sprzedaż."
+                   "\n* Jeśli chcesz zakończyć, wprowadź: stop *\n")
+
     if action not in actions:
         print("Niepoprawna operacja! Wprowadź ponownie")
         continue
 
     if action == "saldo":
         print("\nWprowadź kwotę:")
-        kwota = int(input())
+        amount = int(input())
         print("\nWprowadź komentarz:")
-        kom = input()
-        saldo += kwota
-        operacje_saldo = [action, kwota, kom]
+        comment = input()
+        balance += amount
+        log = f'{action} -- {amount} -- {comment}'
+        sys_actions.append(log)
 
     if action == "zakup":
         print("\nWprowadź nazwę produktu:")
         ID = input()
         print("\nWprowadź cenę:")
-        cena = int(input())
+        price = int(input())
         print("\nWprowadź ilość:")
-        ilosc = int(input())
-        if ID in magazyn.keys():
-            magazyn[ID] += ilosc
+        quantity = int(input())
+        if ID in storage.keys():
+            storage[ID] += quantity
         else:
-            magazyn[ID] = ilosc
-        saldo -= cena * ilosc
-        if cena < 0 or ilosc < 0 or saldo < 0:
+            storage[ID] = quantity
+        balance -= price * quantity
+        if price < 0 or quantity < 0 or balance < 0:
             print("Błąd! Ujemna wartość")
-            break
-        operacje_zakup = [action, ID, cena, ilosc]
+            continue
+        log = f'{action} -- {ID} -- {price} -- {quantity}'
+        sys_actions.append(log)
 
     if action == "sprzedaż":
         print("\nWprowadź nazwę produktu:")
         ID = input()
-        if ID not in magazyn.keys():
+        if ID not in storage.keys():
             print("Towar niedostępny w magazynie. Wprowadź ponownie.")
             continue
         else:
-            magazyn[ID] -= ilosc
+            storage[ID] -= quantity
         print("\nWprowadź cenę:")
-        cena = int(input())
+        price = int(input())
         print("\nWprowadź ilość:")
-        ilosc = int(input())
-        if ilosc < magazyn[ID]:
+        quantity = int(input())
+        if quantity < storage[ID]:
             print("Niewystarczająca ilość towaru w magazynie.")
             break
-        if cena < 0 or ilosc < 0:
+        if price < 0 or quantity < 0:
             print("Błąd! Ujemna wartość")
             break
-        saldo += cena * ilosc
-        operacje_sprzedaz = [action, ID, ilosc, ilosc]
+        balance += price * quantity
+        log = f'{action} -- {ID} -- {price} -- {quantity}'
+        sys_actions.append(log)
 
     if action == "stop":
         print("\nWprowadzanie zakończone. \nPodsumowanie:")
         break
 
-if operacje[0] == "saldo":
-    print("")
-if operacje[0] == "sprzedaż":
-    print("")
-if operacje[0] == "zakup":
-    print("")
-if operacje[0] == "konto":
-    print("\nWartość salda po wykonanych operacjach: ", saldo)
-if operacje[0] == "magazyn":
-    for k, v in magazyn.items():
+if operation[0] == "saldo" or "sprzedaż" or "zakup":
+    print(sys_actions)
+if operation[0] == "konto":
+    print("\nStan salda po wykonanych operacjach: ", balance)
+if operation[0] == "magazyn":
+    for k, v in storage.items():
         print("{}: {}".format(k, v))
-if operacje[0] == "przegląd":
-    print("")
+if operation[0] == "przegląd":
+    print("Liczba wykonanych operacji:", (len(sys_actions)), "\nWprowadź zakres (od, do):")
+    start = int(input())
+    end = int(input())
+    print(sys_actions[start:end])
