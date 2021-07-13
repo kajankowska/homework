@@ -12,6 +12,7 @@ part_sum = 0
 max_weight = 20
 empty_weight = 0
 weight_difference = 0
+max_weight_difference = 0
 
 
 print("Wprowadź liczbę elementów")
@@ -30,9 +31,9 @@ for p in range(num_parts):
          if parcel_weight + part > max_weight:
             parcel_weight = part
             part_sum += part
-            # weight_difference = max_weight - parcel_weight
-            # if weight_difference != 0:
-            #     weight_difference = empty_weight
+            weight_difference = max_weight - parcel_weight
+            if weight_difference > max_weight_difference:
+                max_weight_difference = weight_difference
             print("Paczka o nr {} została wysłana!".format(parcel_nr))
             parcel_nr += 1
          else:
@@ -42,7 +43,7 @@ for p in range(num_parts):
 print("Liczba wysłanych paczek: {}." .format(parcel_nr))
 print("Liczba wysłanych kilogramów: {}." .format(part_sum))
 print("Liczba \"pustych\" kilogramów: {}." .format((parcel_nr * 20) - part_sum))
-print("Najwięcej \"pustych\" kilogramów: {} było w paczce nr: ." .format(empty_weight))
+print("Najwięcej \"pustych\" kilogramów: {} było w paczce nr: ." .format(weight_difference))
 
 
 
