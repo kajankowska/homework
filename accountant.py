@@ -12,7 +12,6 @@ actions = ["saldo", "zakup", "sprzedaż", "stop"]
 
 amount = 0
 quantity = 0
-comment = 0
 balance = 0
 price = 0
 storage = {}
@@ -38,42 +37,45 @@ while True:
 
     if action == "zakup":
         print("\nWprowadź nazwę produktu:")
-        ID = input()
+        product_name = input()
         print("\nWprowadź cenę:")
         price = int(input())
         print("\nWprowadź ilość:")
         quantity = int(input())
-        if ID in storage.keys():
-            storage[ID] += quantity
+        if balance < price * quantity:
+            print("Niewystarczająca ilość środków na zakup")
+            continue
+        if product_name in storage.keys():
+            storage[product_name] += quantity
         else:
-            storage[ID] = quantity
+            storage[product_name] = quantity
         balance -= price * quantity
-        if price < 0 or quantity < 0 or balance < 0:
+        if price < 0 or quantity < 0:
             print("Błąd! Ujemna wartość")
             continue
-        log = f'{action} -- {ID} -- {price} -- {quantity}'
+        log = f'{action} -- {product_name} -- {price} -- {quantity}'
         sys_actions.append(log)
 
     if action == "sprzedaż":
         print("\nWprowadź nazwę produktu:")
-        ID = input()
-        if ID not in storage.keys():
+        product_name = input()
+        if product_name not in storage.keys():
             print("Towar niedostępny w magazynie. Wprowadź ponownie.")
             continue
-        else:
-            storage[ID] -= quantity
         print("\nWprowadź cenę:")
         price = int(input())
         print("\nWprowadź ilość:")
         quantity = int(input())
-        if quantity < storage[ID]:
+        if storage[product_name] < quantity:
             print("Niewystarczająca ilość towaru w magazynie.")
-            break
+            continue
+        else:
+            storage[product_name] -= quantity
         if price < 0 or quantity < 0:
             print("Błąd! Ujemna wartość")
             break
         balance += price * quantity
-        log = f'{action} -- {ID} -- {price} -- {quantity}'
+        log = f'{action} -- {product_name} -- {price} -- {quantity}'
         sys_actions.append(log)
 
     if action == "stop":
