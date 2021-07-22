@@ -12,7 +12,6 @@ educators = []
 teachers = []
 students = []
 class_list = []
-
 school_class = {}
 
 users = "uczeń", "nauczyciel", "wychowawca", "koniec"
