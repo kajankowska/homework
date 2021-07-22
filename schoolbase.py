@@ -14,7 +14,6 @@ students = []
 class_list = []
 
 school_class = {}
-data = {}
 
 users = "uczeń", "nauczyciel", "wychowawca", "koniec"
 
