@@ -12,6 +12,7 @@ educators = {}
 teachers = {}
 students = {}
 school_class = {}
+
 class_list = []
 class_data = []
 
