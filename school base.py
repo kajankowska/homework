@@ -135,5 +135,5 @@ if phrase[0] in data:
 if phrase[0] in data:
     print(f"Lista zajęć (wraz z nauczycielami prowadzącymi), na które uczęszcza {phrase[0]}:")
     if data[phrase[0]].class_nr:
-        for teacher in data[phrase[0]].class_nr:
-            print(data[class_list].teachers)
+        for class_nr in data[class_nr].teachers:
+            print(data[class_nr].teachers)
