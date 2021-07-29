@@ -1,4 +1,5 @@
-# Program that supports the school base. Assign three types of users to classes and a teacher to a subject
+# Program that supports the school base
+# Assign three types of users to classes and a teacher to a subject
 
 import sys
 
@@ -7,6 +8,7 @@ print(sys.argv)
 
 teachers = {}
 data = {}
+
 students_list = []
 class_list = []
 
@@ -51,7 +53,6 @@ class Teacher:
     def __init__(self, name):
         self.name = name
         self.subject = self.subject_choice()
-        self.class_nr = ""
         self.class_list = []
         self.class_assign()
         self.teacher_assign()
@@ -59,9 +60,6 @@ class Teacher:
     def subject_choice(self):
         subject = input("\nWprowadź nazwę przedmiotu, którego uczy {}:\n".format(self.name))
         return subject
-
-    def teacher_assign(self):
-        data[self.name] = self
 
     def class_assign(self):
         while True:
@@ -73,25 +71,22 @@ class Teacher:
             data[class_nr].teachers[self.subject] = self.name
             self.class_list.append(class_nr)
 
+    def teacher_assign(self):
+        data[self.name] = self
+
 
 class Student:
 
     def __init__(self, name):
         self.name = name
-        self.class_nr = ""
-        self.class_list = []
-        self.class_assign()
         self.student_assign()
-
-    def class_assign(self):
-        class_nr = input("\nWprowadź nazwę klasy, do której uczęszcza {}\n".format(self.name))
-        if class_nr not in data:
-            data[class_nr] = SchoolClass()
-        data[class_nr].student = self.name
-        self.class_list.append(class_nr)
 
     def student_assign(self):
         data[self.name] = self
+        self.class_nr = input("\nWprowadź nazwę klasy, do której uczęszcza {}\n".format(self.name))
+        if self.class_nr not in data:
+            data[self.class_nr] = SchoolClass()
+        data[self.class_nr].student_assign(self.name)
 
 
 while True:
@@ -113,6 +108,8 @@ while True:
         if user == "wychowawca":
             educator = Educator(name)
             continue
+
+# Execution:
 
 # phrase specified class_nr:
 if phrase[0] in data:
@@ -139,6 +136,5 @@ if phrase[0] in data:
 # phrase student name:
 if phrase[0] in data:
     print(f"Lista zajęć (wraz z nauczycielami prowadzącymi), na które uczęszcza {phrase[0]}:")
-    if data[phrase[0]].class_list:
-        for class_nr in data[phrase[0]].class_list:
-            print(data[class_nr].teachers)
+    for class_nr in data[phrase[0]].class_nr:
+        print(data[class_nr].educator)
