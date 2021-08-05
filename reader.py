@@ -9,8 +9,8 @@ changes = sys.argv[3:]
 print(sys.argv)
 
 fields = []
-row = Y
-column = X
+row_nr = Y
+column_nr = X
 
 with open("src_filepath", newline="") as f:
     reader = csv.reader(f)
@@ -18,7 +18,21 @@ with open("src_filepath", newline="") as f:
         fields.append(line)
 
     if not os.path.exists("src.filepath"):
-        print("Nie można odnaleźć pliku!\n" + f"Zawartość wskazanej lokalizacji:\n{os.listdir(src_filepath)}.")
+        for i in range(len(os.listdir())):
+            print(f"Nie można odnaleźć pliku!\n" + f"Zawartość wskazanej lokalizacji:\n{os.listdir()[i]}")
     else:
         print(f"Plik znajduje się w lokalizacji: {src_filepath}.")
  
+if len(changes) != len(fields[y]):
+    print("Niepoprawna ilość argumentów! Wprowadź ponownie.")
+else:
+    print("Dane zaczytały się poprawnie.")
+    
+    
+# to add:    
+# validation of arguments
+# making changes to the file
+
+print(fields)
+
+    
