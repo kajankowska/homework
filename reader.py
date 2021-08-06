@@ -2,33 +2,39 @@ import sys
 import os
 import csv
 
-
 src_filepath = sys.argv[1]
 dst_filepath = sys.argv[2]
-changes = sys.argv[3:]
-print(sys.argv)
-
+newdata = sys.argv[3:]
+changes = []
 fields = []
-row_nr = Y
-column_nr = X
 
-with open("src_filepath", newline="") as f:
-    reader = csv.reader(f)
-    for line in reader:
-        fields.append(line)
+if os.path.exists(src_filepath):
+    print(f"\nŚcieżka do pliku: {src_filepath}.\n")
+    with open((sys.argv[1]), "r", newline="", encoding="utf-8") as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            fields.append(row)
 
-    if not os.path.exists("src.filepath"):
-        for i in range(len(os.listdir())):
-            print(f"Nie można odnaleźć pliku!\n" + f"Zawartość wskazanej lokalizacji:\n{os.listdir()[i]}")
-    else:
-        print(f"Plik znajduje się w lokalizacji: {src_filepath}.")
-        
-for line in fields:
-     for element in line[:-1]:  # jedziemy po wszystkich elementach wiersza oprócz ostatniego
-          file.write(str(element) + ",")  # po każdym przecinek
-              file.write(str(line[-1] + "\n"))  # a po ostatnim enter
-    
+if not os.path.exists(src_filepath) or not os.path.isfile(src_filepath):
+    print(f"\nNie można odnaleźć pliku!\n" + f"Zawartość wskazanej lokalizacji:\n{os.listdir()}")
 
-print(fields)
+for change in sys.argv[3:]:
+    changes.append(change.split(","))
 
-    
+for change in changes:
+    if int(change[0]) > len(newdata[0]) - 1:
+        print("Błędna liczba wierszy")
+        exit()
+    if int(change[1]) > len(newdata[0]) - 1:
+        print("Błędna liczba kolumn")
+        exit()
+    fields[int(change[0])][int(change[1])] = change[2]
+
+for i in fields:
+    print(i)
+
+with open((sys.argv[2]), "w", newline="", encoding="utf-8") as csvoutfile:
+    writer = csv.writer(csvoutfile)
+    for row in fields:
+        writer.writerow(row)
+print(f"\nPlik został zapisany w lokalizacji: {dst_filepath}.")
