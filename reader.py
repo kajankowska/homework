@@ -22,16 +22,12 @@ with open("src_filepath", newline="") as f:
             print(f"Nie można odnaleźć pliku!\n" + f"Zawartość wskazanej lokalizacji:\n{os.listdir()[i]}")
     else:
         print(f"Plik znajduje się w lokalizacji: {src_filepath}.")
- 
-if len(changes) != len(fields[y]):
-    print("Niepoprawna ilość argumentów! Wprowadź ponownie.")
-else:
-    print("Dane zaczytały się poprawnie.")
+        
+for line in fields:
+     for element in line[:-1]:  # jedziemy po wszystkich elementach wiersza oprócz ostatniego
+          file.write(str(element) + ",")  # po każdym przecinek
+              file.write(str(line[-1] + "\n"))  # a po ostatnim enter
     
-    
-# to add:    
-# validation of arguments
-# making changes to the file
 
 print(fields)
 
