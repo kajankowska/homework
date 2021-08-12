@@ -1,10 +1,11 @@
 import sys
 import os
 import csv
-import json, pickle
+import json
+import pickle
 import pathlib
 
-src_filepath = sys.argv[1]
+src_filepath = sys.argv[1]  # filetype: csv, json or pickle
 dst_filepath = sys.argv[2]
 newdata = sys.argv[3:]
 changes = []
@@ -13,23 +14,32 @@ fields = []
 if os.path.exists(src_filepath):
     print(f"\nŚcieżka do pliku: {src_filepath}.\n")
 
-    def csv(input):
+
+class FileReading():
+
+    def csv_type(input):
         with open((sys.argv[1]), "r", newline="", encoding="utf-8") as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 fields.append(row)
 
-
-    def json(input):
+    def json_type(input):
         with open(sys.argv[1], "r") as file:
-            input += json.fields(file.read())
+            input += json.loads(file.read())
             return True
 
-
-    def pickle(input):
-        with open(sys.argv[1], "r") as file:
-            input += pickle.fields(file.read())
+    def pickle_type(input):
+        with open(sys.argv[1], "rb") as file:
+            input += pickle.loads(file.read())
             return True
+
+    if src_filepath == "csv":
+        csv_type(input)
+    if src_filepath == "json":
+        json_type(input)
+    if src_filepath == "csv":
+        pickle_type(input)
+
 
 if not os.path.exists(src_filepath) or not os.path.isfile(src_filepath):
     print(f"\nNie można odnaleźć pliku!\n" + f"Zawartość wskazanej lokalizacji:\n{os.listdir()}")
