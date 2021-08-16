@@ -1,13 +1,23 @@
 import sys
-import datetime
 import requests
+import datetime
 
-# api_key = sys.argv[1]
-# weatherdate = sys.argv[2]
+api_key = sys.argv[1]
+weatherdate = sys.argv[2]
 
 
-def __init__(self, date, town):
-    self.date = datetime.datetime.strptime(sys.argv[2], "%Y-%m-%d").date()
+class Forecast:
+    def __init__(self, day, city):
+        self.day = datetime.datetime.strptime(sys.argv[2], "%Y-%m-%d").date()
+        self.city = city
+
+    def proper_day(self):
+        difference = self.day - datetime.datetime.today().date()
+        if difference.days > 16:
+            return False
+        if difference.days < 0:
+            return False
+        return True
 
 
 def api_data_downloading():
@@ -16,7 +26,7 @@ def api_data_downloading():
     querystring = {"q": "Warszawa", "lat": "Warszawa", "lon": "Warszawa", "cnt": "16", "units": "metric or imperial"}
 
     headers = {
-        'x-rapidapi-key': "7750c7f283mshe36073c5c257e9ap13cfd3jsnf1c5e55acf6e",
+        'x-rapidapi-key': api_key,
         'x-rapidapi-host': "community-open-weather-map.p.rapidapi.com"
     }
 
