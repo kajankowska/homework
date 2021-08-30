@@ -23,13 +23,6 @@ class File:
         if not os.path.exists(self.src_filepath) or not os.path.isfile(self.src_filepath):
             print(f"\nFile not found!\n" + f"Location content:\n{os.listdir()}")
 
-        # if self.extension == "csv":
-        #     selection = CsvFile()
-        # if self.extension == "json":
-        #     selection = JsonFile()
-        # if self.extension == "pickle":
-        #     selection = PickleFile()
-
     def file_editing(self):
         for change in self.newdata:
             self.changes.append(change.split(","))
@@ -48,11 +41,6 @@ class File:
 
 
 class CsvFile(File):
-    def __init__(self):
-        super().__init__()
-
-    def file_exist(self):
-        super().file_exist()
 
     def readfile(self):
         with open(self.src_filepath, "r", newline="", encoding="utf-8") as csvfile:
@@ -60,36 +48,19 @@ class CsvFile(File):
             for row in reader:
                 self.fields.append(row)
 
-    def file_editing(self):
-        super().file_editing()
-
-    def display(self):
-        super().display()
-
     def savefile(self):
         with open(self.dst_filepath, "w", newline="", encoding="utf-8") as outfile:
             writer = csv.writer(outfile)
             for row in self.fields:
                 writer.writerow(row)
         print(f"\nThe file location: {self.dst_filepath}.")
+
         
-
 class JsonFile(File):
-    def __init__(self):
-        super().__init__()
-
-    def file_exist(self):
-        super().file_exist()
 
     def readfile(self):
         with open(self.src_filepath, "r", newline="", encoding="utf-8") as json_file:
             self.fields = json.loads(json_file)
-
-    def file_editing(self):
-        super().file_editing()
-
-    def display(self):
-        super().display()
 
     def savefile(self):
         with open(self.dst_filepath, "w", newline="", encoding="utf-8") as outfile:
@@ -98,23 +69,29 @@ class JsonFile(File):
 
 
 class PickleFile(File):
-    def __init__(self):
-        super().__init__()
-
-    def file_exist(self):
-        super().file_exist()
 
     def readfile(self):
         with open(self.src_filepath, "r", newline="", encoding="utf-8") as pickle_file:
             self.fields = pickle.loads(pickle_file)
 
-    def file_editing(self):
-        super().file_editing()
-
-    def display(self):
-        super().display()
-
     def savefile(self):
         with open(self.dst_filepath, "w", newline="", encoding="utf-8") as outfile:
-            outfile.write(json.dumps(self.fields))
+            outfile.write(pickle.dumps(self.fields))
         print(f"\nThe file location: {self.dst_filepath}.")
+
+
+file_extenison = pathlib.Path(sys.argv[1])
+type_extension = file_extenison.suffix
+
+
+if type_extension == ".csv":
+    selection = CsvFile()
+if type_extension == ".json":
+    selection = JsonFile()
+if type_extension == ".pkl":
+    selection = PickleFile()
+
+selection.readfile()
+selection.file_editing()
+selection.display()
+selection.savefile()
